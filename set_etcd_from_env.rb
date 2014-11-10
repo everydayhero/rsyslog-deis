@@ -11,7 +11,8 @@ host = ENV['HOST'] || '127.0.0.1'
 etcd_port = ENV['ETCD_PORT'] || '4001'
 etcd_path = ENV['ETCD_PATH'] || '/deis/logs'
 etcd_ttl = ENV['ETCD_TTL'] || '20'
-port = ENV['PORT'] || ENV['EXTERNAL_PORT'] || '514'
+# port can only be 514 due to the container exposing that port only
+port = '514'
 timeout = 10
 
 client = Etcd.client(host: host, port: etcd_port)

@@ -11,7 +11,8 @@ require 'erb'
 host = ENV['HOST'] || '127.0.0.1'
 etcd_port = ENV['ETCD_PORT'] || '4001'
 etcd_path = ENV['ETCD_RSYSLOG_PATH'] || '/deis_rsyslog/'
-external_port = ENV['PORT'] || ENV['EXTERNAL_PORT'] || '514'
+# external_port = ENV['PORT'] || ENV['EXTERNAL_PORT'] || '514'
+external_port = '514'
 
 client = Etcd.client(host: host, port: etcd_port)
 
