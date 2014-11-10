@@ -13,12 +13,16 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get -y -q install software-properties-common python-software-properties
 RUN add-apt-repository ppa:adiscon/v8-stable
-RUN apt-get update && apt-get -y -q install rsyslog bundler
+RUN apt-get update && apt-get -y -q install rsyslog bundler curl
 
 ADD rsyslog.conf.erb /root/
-ADD papaerweight.conf.erb /root/
+ADD paperweight.conf.erb /root/
 ADD set_etcd_from_env.rb /root/
 ADD template_from_etcd.rb /root/
+ADD papertrail-bundle.pem.md5 /etc/
+
+RUN cd /etc/ && curl -O  https://papertrailapp.com/tools/papertrail-bundle.pem
+RUN cd /etc/ && md5sum -c papertrail-bundle.pem.md5
 
 # Make sure that these ports are the same that deis expects
 EXPOSE 514/tcp 514/udp
