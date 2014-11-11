@@ -8,6 +8,7 @@ This is a replacement logger for the existing deis logger, which uses rsyslog to
 Operation
 ---------
 The logger can be used in deis by setting:
+    
     deisctl config logger set image=everydayhero/rsyslog-deis:latest
 
 The logger will wait until you have set the keys for the papertrail host in etcd with: 
