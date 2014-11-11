@@ -30,7 +30,9 @@ port_value = get_when_exists.call("#{etcd_path}/port")
 
 write_conf = Proc.new { |output, template|
   config = ERB.new(File.read(template)).result(
-    OpenStruct.new(host_value: host_value, port_value: port_value).send(:binding))
+    OpenStruct.new(host_value: host_value, 
+                  port_value: port_value,
+                  external_port: external_port).send(:binding))
 
   File.open(output, File::CREAT|File::TRUNC|File::RDWR, 0644) do |file|
     file.write(config)
