@@ -16,11 +16,11 @@ $ModLoad immark  # provides --MARK-- message capability
 
 # provides UDP syslog reception
 $ModLoad imudp
-$UDPServerRun <% external_port %>
+$UDPServerRun <%= external_port %>
 
 # provides TCP syslog reception
 $ModLoad imtcp
-$InputTCPServerRun <% external_port %>
+$InputTCPServerRun <%= external_port %>
 
 
 ###########################
