@@ -22,6 +22,7 @@ ADD rsyslog.conf.erb /root/
 ADD paperweight.conf.erb /root/
 ADD set_etcd_from_env.rb /root/
 ADD template_from_etcd.rb /root/
+ADD start_rsyslog.sh /root/
 ADD papertrail-bundle.pem.md5 /etc/
 
 RUN cd /etc/ && curl -O  https://papertrailapp.com/tools/papertrail-bundle.pem
