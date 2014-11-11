@@ -39,6 +39,6 @@ write_conf = Proc.new { |output, template|
   end
 }
 
-write_conf.call("/etc/rsyslog.d/paperweight.conf", "paperweight.conf.erb")
-write_conf.call("/etc/rsyslog.conf", "rsyslog.conf.erb")
+write_conf.call("/etc/rsyslog.d/paperweight.conf", "/root/paperweight.conf.erb")
+write_conf.call("/etc/rsyslog.conf", "/root/rsyslog.conf.erb")
 
