@@ -27,12 +27,12 @@ get_when_exists = Proc.new {|path|
 host_value = get_when_exists.call("#{etcd_path}/host")
 
 port_value = get_when_exists.call("#{etcd_path}/port")
+binding = OpenStruct.new(host_value: host_value, 
+                  port_value: port_value,
+                  external_port: external_port).send(:binding)
 
 write_conf = Proc.new { |output, template|
-  config = ERB.new(File.read(template)).result(
-    OpenStruct.new(host_value: host_value, 
-                  port_value: port_value,
-                  external_port: external_port).send(:binding))
+  config = ERB.new(File.read(template)).result(binding)
 
   File.open(output, File::CREAT|File::TRUNC|File::RDWR, 0644) do |file|
     file.write(config)
