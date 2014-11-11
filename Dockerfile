@@ -31,6 +31,7 @@ RUN cd /etc/ && curl -O  https://papertrailapp.com/tools/papertrail-bundle.pem
 RUN cd /etc/ && md5sum -c papertrail-bundle.pem.md5
 
 RUN cd /root && bundle install 
+RUN rm /etc/rsyslog.d/50-default.conf
 
 # Make sure that these ports are the same that deis expects
 EXPOSE 514/tcp 514/udp
