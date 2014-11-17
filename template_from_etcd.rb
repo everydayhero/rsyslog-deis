@@ -18,12 +18,11 @@ external_port = '514'
 
 client = Etcd.client(host: host, port: etcd_port)
 
-get_etcd_value = Proc.new {|path| 
-  if client.exists?(path) do 
+get_etcd_value = Proc.new { |path| 
+  if client.exists?(path) 
     client.get(path).value
   end
 }
-
 
 write_conf = Proc.new { |output, template|
   config = ERB.new(File.read(template)).result(binding)
@@ -39,7 +38,7 @@ papertrail_port = get_etcd_value.call("#{etcd_path}/papertrail_port")
 
 papertrail_config = "/etc/rsyslog.d/paperweight.conf"
 
-if papertrail_host && papertrail_host do
+if papertrail_host && papertrail_host
   binding = OpenStruct.new(papertrail_host: papertrail_host, 
                     papertrail_port: papertrail_port).send(:binding)
   write_conf.call(papertrail_config, "/root/paperweight.conf.erb", binding)
@@ -53,7 +52,7 @@ loggly_tag = get_etcd_value.call("#{etcd_path}/loggly_tag")
 
 loggly_config = "/etc/rsyslog.d/loggly.conf"
 
-if loggly_token && loggly_tag do 
+if loggly_token && loggly_tag
   binding = OpenStruct.new(loggly_token: loggly_token, loggly_tag: loggly_tag). send(:binding)
   write_conf.call(loggly_config, "/root/loggly.conf.erb", binding )
 else
