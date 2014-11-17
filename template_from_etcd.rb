@@ -1,6 +1,7 @@
 require 'etcd'
 require 'erb'
 require 'ostruct'
+require 'fileutils'
 
 # DEBUG enables verbose output if set
 # ETCD_PORT sets the TCP port on which to connect to the local etcd daemon (default: 4001)
@@ -17,19 +18,12 @@ external_port = '514'
 
 client = Etcd.client(host: host, port: etcd_port)
 
-get_when_exists = Proc.new {|path| 
-  while not client.exists?(path) do 
-    sleep(1)
+get_etcd_value = Proc.new {|path| 
+  if client.exists?(path) do 
+    client.get(path).value
   end
-  client.get(path).value
 }
 
-host_value = get_when_exists.call("#{etcd_path}/host")
-
-port_value = get_when_exists.call("#{etcd_path}/port")
-binding = OpenStruct.new(host_value: host_value, 
-                  port_value: port_value,
-                  external_port: external_port).send(:binding)
 
 write_conf = Proc.new { |output, template|
   config = ERB.new(File.read(template)).result(binding)
@@ -39,6 +33,33 @@ write_conf = Proc.new { |output, template|
   end
 }
 
-write_conf.call("/etc/rsyslog.d/paperweight.conf", "/root/paperweight.conf.erb")
-write_conf.call("/etc/rsyslog.conf", "/root/rsyslog.conf.erb")
+papertrail_host = get_etcd_value.call("#{etcd_path}/papertrail_host")
+
+papertrail_port = get_etcd_value.call("#{etcd_path}/papertrail_port")
+
+papertrail_config = "/etc/rsyslog.d/paperweight.conf"
+
+if papertrail_host && papertrail_host do
+  binding = OpenStruct.new(papertrail_host: papertrail_host, 
+                    papertrail_port: papertrail_port).send(:binding)
+  write_conf.call(papertrail_config, "/root/paperweight.conf.erb", binding)
+else
+  File.rename papertrail_config, papertrail_config + '.bak' if File.exists? papertrail_config
+end
+
+loggly_token = get_etcd_value.call("#{etcd_path}/loggly_token")
+
+loggly_tag = get_etcd_value.call("#{etcd_path}/loggly_tag") 
+
+loggly_config = "/etc/rsyslog.d/loggly.conf"
+
+if loggly_token && loggly_tag do 
+  binding = OpenStruct.new(loggly_token: loggly_token, loggly_tag: loggly_tag). send(:binding)
+  write_conf.call(loggly_config, "/root/loggly.conf.erb", binding )
+else
+  File.rename loggly_config, loggly_config + '.bak' if File.exists? loggly_config
+end
+
+binding = OpenStruct.new(external_port: external_port).send(:binding)
+write_conf.call("/etc/rsyslog.conf", "/root/rsyslog.conf.erb", binding)
 
