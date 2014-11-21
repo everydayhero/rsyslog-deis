@@ -1,3 +1,3 @@
-$template LogglyFormat,"<%%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [<%= loggly_token %>@41058 tag=\"<%= loggly_tag %>\"] %msg%\n"
+$template LogglyFormat,"<%%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %msg:R,ERE,1,DFLT:[[:space:]]([^[:space:]]+):--end% %procid% %msgid% [<%= loggly_token %>@41058 tag=\"<%= loggly_tag %>\"] %msg:R,ERE,1,DFLT:[[:space:]][^[:space:]]+:[[:space:]](.*)$--end%\n"
 
 *.* @@logs-01.loggly.com:514;LogglyFormat
