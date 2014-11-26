@@ -15,9 +15,13 @@ etcd_ttl = ENV['ETCD_TTL'] || '20'
 port = '514'
 timeout = 10
 
-client = Etcd.client(host: host, port: etcd_port)
+
 while true do
-  client.set("#{etcd_path}/host", value: host, ttl: etcd_ttl)
-  client.set("#{etcd_path}/port", value: port, ttl: etcd_ttl)  
-  sleep(timeout)
+  begin
+    client = Etcd.client(host: host, port: etcd_port)
+    client.set("#{etcd_path}/host", value: host, ttl: etcd_ttl)
+    client.set("#{etcd_path}/port", value: port, ttl: etcd_ttl)
+    sleep(timeout)
+  rescue
+  end
 end
