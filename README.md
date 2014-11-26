@@ -9,7 +9,7 @@ Operation
 ---------
 The logger can be used in deis by setting:
     
-    deisctl config logger set image=everydayhero/rsyslog-deis:latest
+    deisctl config logger set image=kostas/rsyslog-deis:latest
 
 The logger for keys for papertrail and loggly in etcd and will configure accordingly. Those can be set with: 
 
