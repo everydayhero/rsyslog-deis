@@ -25,10 +25,9 @@ ADD Gemfile /root/
 ADD Gemfile.lock /root/
 ADD start_rsyslog.sh /root/
 ADD papertrail-bundle.pem.md5 /etc/
-
+ADD data.logentries.com.crt /etc/
 
 RUN cd /etc/ && curl -O  https://papertrailapp.com/tools/papertrail-bundle.pem
-RUN cd /etc/ && curl -O  https://d2rqpywgspga97.cloudfront.net/mstatic/1436994574/includes/certificates/logentries.all.crt
 RUN cd /etc/ && md5sum -c papertrail-bundle.pem.md5
 
 RUN cd /root && bundle install 

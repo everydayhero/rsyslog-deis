@@ -1,6 +1,6 @@
 $template LogentriesFormat,"<%= logentries_token %> %HOSTNAME% %syslogtag%%msg%\n"
 
-$DefaultNetstreamDriverCAFile /etc/logentries.all.crt
+$DefaultNetstreamDriverCAFile /etc/data.logentries.com.crt
 $ActionSendStreamDriver gtls
 $ActionSendStreamDriverMode 1
 $ActionSendStreamDriverAuthMode x509/name
