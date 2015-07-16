@@ -21,6 +21,7 @@ RUN apt-get update && apt-get -y -q install curl
 ADD rsyslog.conf.erb /root/
 ADD paperweight.conf.erb /root/
 ADD loggly.conf.erb /root/
+ADD logentries.conf.erb /root/
 ADD set_etcd_from_env.rb /root/
 ADD template_from_etcd.rb /root/
 ADD Gemfile /root/
@@ -30,6 +31,7 @@ ADD papertrail-bundle.pem.md5 /etc/
 
 
 RUN cd /etc/ && curl -O  https://papertrailapp.com/tools/papertrail-bundle.pem
+RUN cd /etc/ && curl -O  https://d2rqpywgspga97.cloudfront.net/mstatic/1436994574/includes/certificates/logentries.all.crt
 RUN cd /etc/ && md5sum -c papertrail-bundle.pem.md5
 
 RUN cd /root && bundle install 

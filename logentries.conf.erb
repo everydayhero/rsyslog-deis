@@ -1,0 +1,9 @@
+$template LogentriesFormat,"<%= logentries_token %> %HOSTNAME% %syslogtag%%msg%\n"
+
+$DefaultNetstreamDriverCAFile /etc/logentries.all.crt
+$ActionSendStreamDriver gtls
+$ActionSendStreamDriverMode 1
+$ActionSendStreamDriverAuthMode x509/name
+$ActionSendStreamDriverPermittedPeer *.logentries.com
+
+*.* @@data.logentries.com:443;LogentriesFormat

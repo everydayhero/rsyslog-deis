@@ -59,6 +59,17 @@ else
   File.rename loggly_config, loggly_config + '.bak' if File.exists? loggly_config
 end
 
+logentries_token = get_etcd_value.call("#{etcd_path}/logentries_token")
+
+logentries_config = "/etc/rsyslog.d/logentries.conf"
+
+if logentries_token
+  binding = OpenStruct.new(logentries_token: logentries_token).send(:binding)
+  write_conf.call(logentries_config, "/root/logentries.conf.erb", binding )
+else
+  File.rename logentries_config, logentries_config + '.bak' if File.exists? logentries_config
+end
+
 binding = OpenStruct.new(external_port: external_port).send(:binding)
 write_conf.call("/etc/rsyslog.conf", "/root/rsyslog.conf.erb", binding)
 
