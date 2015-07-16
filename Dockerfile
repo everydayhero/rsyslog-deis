@@ -11,12 +11,9 @@ MAINTAINER Konstantinos Servis <kostas@everydayhero.com.au>
 ENV REFRESHED_ON "10 Nov 2014"
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get -y -q install software-properties-common
-RUN apt-get update && apt-get -y -q install python-software-properties
+RUN apt-get update && apt-get -y -q install software-properties-common python-software-properties
 RUN add-apt-repository ppa:adiscon/v8-stable
-RUN apt-get update && apt-get -y -q install rsyslog
-RUN apt-get update && apt-get -y -q install bundler
-RUN apt-get update && apt-get -y -q install curl
+RUN apt-get update && apt-get -y -q install rsyslog bundler curl rsyslog-gnutls
 
 ADD rsyslog.conf.erb /root/
 ADD paperweight.conf.erb /root/
