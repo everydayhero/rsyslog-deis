@@ -1,4 +1,4 @@
-$template LogentriesFormat,"<%= logentries_token %> %HOSTNAME% %syslogtag%%msg%\n"
+$template LogentriesFormat,"<%= logentries_token %> %FROMHOST-IP% %syslogtag%%msg%\n"
 
 $DefaultNetstreamDriverCAFile /etc/data.logentries.com.crt
 $ActionSendStreamDriver gtls
